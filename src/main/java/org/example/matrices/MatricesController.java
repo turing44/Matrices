@@ -124,19 +124,17 @@ public class MatricesController {
     // Botones
     @FXML
     public void Analizar() {
-        TextField[][] matriz1 =  {
-                {m1_0_0, m1_0_1, m1_0_2},
-                {m1_1_0, m1_1_1, m1_1_2},
-                {m1_2_0, m1_2_1, m1_2_2}
-        };
-        TextField[][] matriz2 =  {
-                {m2_0_0, m2_0_1, m2_0_2},
-                {m2_1_0, m2_1_1, m2_1_2},
-                {m2_2_0, m2_2_1, m2_2_2}
-        };
-
         try {
-            if (calculadora.comprobarSiEsInversa(procesarDatos.validarMatriz(matriz1), procesarDatos.validarMatriz(matriz2))){
+            TextField[][] matriz1 = obtenerMatriz("1");
+            TextField[][] matriz2 = obtenerMatriz("2");
+
+            if (
+                    calculadora.comprobarSiEsInversa(
+                            procesarDatos.validarMatriz(matriz1),
+                            procesarDatos.validarMatriz(matriz2)
+                    )
+            )
+            {
                 mensaje.setText("Es identidad");
             } else {
                 mensaje.setText("No es identidad");
@@ -149,18 +147,11 @@ public class MatricesController {
 
     @FXML
     public void Sumar() {
-        TextField[][] matriz1 =  {
-                {m1_0_0, m1_0_1, m1_0_2},
-                {m1_1_0, m1_1_1, m1_1_2},
-                {m1_2_0, m1_2_1, m1_2_2}
-        };
-        TextField[][] matriz2 =  {
-                {m2_0_0, m2_0_1, m2_0_2},
-                {m2_1_0, m2_1_1, m2_1_2},
-                {m2_2_0, m2_2_1, m2_2_2}
-        };
-
         try {
+            TextField[][] matriz1 = obtenerMatriz("1");
+            TextField[][] matriz2 = obtenerMatriz("2");
+
+
             TextField[][] matrizRespuesta =
             procesarDatos.obtenerMatrizDeTextFields(
                     calculadora.sumar(
@@ -169,7 +160,9 @@ public class MatricesController {
                     )
             );
 
+
             imprimirMatrizResultado(matrizRespuesta);
+
         } catch (IllegalArgumentException iae) {
             mensaje.setText(iae.getMessage());
         }
@@ -177,17 +170,10 @@ public class MatricesController {
 
     @FXML
     public void Multiplicar() {
-        TextField[][] matriz1 =  {
-                {m1_0_0, m1_0_1, m1_0_2},
-                {m1_1_0, m1_1_1, m1_1_2},
-                {m1_2_0, m1_2_1, m1_2_2}
-        };
-        TextField[][] matriz2 =  {
-                {m2_0_0, m2_0_1, m2_0_2},
-                {m2_1_0, m2_1_1, m2_1_2},
-                {m2_2_0, m2_2_1, m2_2_2}
-        };
         try {
+            TextField[][] matriz1 =  obtenerMatriz("1");
+            TextField[][] matriz2 =  obtenerMatriz("2");
+
             TextField[][] matrizRespuesta =
                     procesarDatos.obtenerMatrizDeTextFields(
                             calculadora.multiplicar(
@@ -204,22 +190,9 @@ public class MatricesController {
 
     @FXML
     public void Limpiar() {
-
-        TextField[][] matriz1 =  {
-                {m1_0_0, m1_0_1, m1_0_2},
-                {m1_1_0, m1_1_1, m1_1_2},
-                {m1_2_0, m1_2_1, m1_2_2}
-        };
-        TextField[][] matriz2 =  {
-                {m2_0_0, m2_0_1, m2_0_2},
-                {m2_1_0, m2_1_1, m2_1_2},
-                {m2_2_0, m2_2_1, m2_2_2}
-        };
-        TextField[][] matrizResultado =  {
-                {mR_0_0, mR_0_1, mR_0_2},
-                {mR_1_0, mR_1_1, mR_1_2},
-                {mR_2_0, mR_2_1, mR_2_2}
-        };
+        TextField[][] matriz1 =  obtenerMatriz("1");
+        TextField[][] matriz2 =  obtenerMatriz("2");
+        TextField[][] matrizResultado =  obtenerMatriz("Resultado");
 
         for (int x = 0; x < matrizResultado.length; x++) {
             for (int y = 0; y < matrizResultado[0].length; y++) {
@@ -234,11 +207,7 @@ public class MatricesController {
     }
 
     private void imprimirMatrizResultado(TextField[][] matriz) {
-        TextField[][] matrizResultado =  {
-                {mR_0_0, mR_0_1, mR_0_2},
-                {mR_1_0, mR_1_1, mR_1_2},
-                {mR_2_0, mR_2_1, mR_2_2}
-        };
+        TextField[][] matrizResultado =  obtenerMatriz("Resultado");
 
         for (int x = 0; x < matrizResultado.length; x++) {
             for (int y = 0; y < matrizResultado[0].length; y++) {
@@ -246,11 +215,34 @@ public class MatricesController {
             }
         }
 
-
     }
 
+    private TextField[][] obtenerMatriz(String matriz) throws IllegalArgumentException {
+        switch (matriz) {
+            case "1":
+                return new TextField[][] {
+                    {m1_0_0, m1_0_1, m1_0_2},
+                    {m1_1_0, m1_1_1, m1_1_2},
+                    {m1_2_0, m1_2_1, m1_2_2}
+                };
 
+            case "2":
+                return new TextField[][] {
+                        {m2_0_0, m2_0_1, m2_0_2},
+                        {m2_1_0, m2_1_1, m2_1_2},
+                        {m2_2_0, m2_2_1, m2_2_2}
+                };
 
+            case "Resultado":
+                return new TextField[][] {
+                        {mR_0_0, mR_0_1, mR_0_2},
+                        {mR_1_0, mR_1_1, mR_1_2},
+                        {mR_2_0, mR_2_1, mR_2_2}
+                };
 
+            default:
+                throw new IllegalArgumentException("La matriz no existe");
+        }
+    }
 
 }
